@@ -1,9 +1,11 @@
 pipeline {
-    agent any
+    agent {
+            label 'jenkins-slave1'
+}
     stages {
         stage('GIT') {
             steps {
-                 git 'https://github.com/khalednoh/demo1.git'
+                 git 'https://github.com/Hassan-Eid-Hassan/java.git'
             }
         }
         stage('Build JAR') {
@@ -34,11 +36,15 @@ pipeline {
                sh 'docker push hassaneid/java:${BUILD_NUMBER}'
             }
         }
-        stage('Deploy'){
+        //stage('Deploy'){
+        //    steps {
+        //        sh """ ssh root@${Cluster} 'kubectl set image deployment java-deployment java=hassaneid/java:${version}' """
+      //      }
+    //    }
+        stage('mail'){
             steps {
-                sh """ ssh -i /home/ec2-user/eand.pem ec2-user@52.91.25.97 'sudo kubectl set image deployment java-deployment java=hassaneid/java:${BUILD_NUMBER}' """
-            } 
+            emailext body: 'test', recipientProviders: [buildUser()], subject: 'test', to: 'hassaneid339@gmail.com'
+            }
         }
-
     }
 }
