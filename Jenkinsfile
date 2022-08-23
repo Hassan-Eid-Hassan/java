@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('GIT') {
             steps {
-                 git 'https://github.com/khalednoh/demo1.git'
+                git branch: "${params.BRANCH}", url: 'https://github.com/khalednoh/demo1.git'
                 echo 'test 3'
             }
         }
